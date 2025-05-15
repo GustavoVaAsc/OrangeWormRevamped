@@ -20,7 +20,7 @@ public class EuclideanHeuristic {
         double a = haversine(latitude_diff) + Math.cos(Math.toRadians(y2))*Math.cos(Math.toRadians(y1)) + haversine(longitude_diff);
         double c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 
-        double result =  (EARTH_RADIUS*c)/AVG_SPEED;
-        return (int) result; // for now is in hours, change to minutes.
+        double result = ((EARTH_RADIUS*c)/AVG_SPEED)/60;
+        return (int) result;
     }
 }
