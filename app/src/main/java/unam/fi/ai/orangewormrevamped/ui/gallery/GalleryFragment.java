@@ -25,7 +25,8 @@ public class GalleryFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //textView.setText("My routes");
+
         return root;
     }
 
