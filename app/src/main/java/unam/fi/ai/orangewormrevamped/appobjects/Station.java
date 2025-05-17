@@ -4,14 +4,14 @@ public class Station {
     private int id;
     private String name;
     // TODO: Add logo image
-    private int logoResId;  // resource ID of the drawable
-    private HashSet<Integer> lines;
+    private String logo_file;  // resource ID of the drawable
+    private HashSet<Character> lines;
     private double latitude;
     private double longitude;
-    public Station(int id, String name, int logoResId, HashSet<Integer> lines, double latitude, double longitude){
+    public Station(int id, String name, String logo_file, HashSet<Character> lines, double latitude, double longitude){
         this.id = id;
         this.name = name;
-        this.logoResId = logoResId;
+        this.logo_file = logo_file;
         this.lines = lines;
         this.latitude = latitude;
         this.longitude = longitude;
