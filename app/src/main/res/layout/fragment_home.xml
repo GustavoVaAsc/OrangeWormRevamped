@@ -7,4 +7,14 @@
         android:id="@+id/stationRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
+    <TextView
+        android:id="@+id/stationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stations will appear here"
+        android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
 </LinearLayout>

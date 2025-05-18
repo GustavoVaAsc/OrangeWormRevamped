@@ -8,7 +8,8 @@ public class Station {
     private HashSet<String> lines;
     private double latitude;
     private double longitude;
-    public Station(int id, String name, String logo_file, HashSet<String> lines, double latitude, double longitude){
+    // String logo_file (add this)
+    public Station(int id, String name, HashSet<String> lines, double latitude, double longitude){
         this.id = id;
         this.name = name;
         this.logo_file = logo_file;
@@ -17,5 +18,7 @@ public class Station {
         this.longitude = longitude;
     }
 
-
+    public String getName(){return this.name;}
+    public int getId(){return this.id;}
+    public HashSet<String> getLines(){return this.lines;}
 }
