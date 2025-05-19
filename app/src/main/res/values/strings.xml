@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">OrangeWormRevamped</string>
+    <string name="app_name">AI VIENE EL METRO</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Orange Worm Revamped</string>
+    <string name="nav_header_title">AI VIENE EL METRO</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Acerca de</string>
 
