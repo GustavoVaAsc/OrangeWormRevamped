@@ -22,6 +22,7 @@ public class Graph {
         this.adjacency_list = new HashMap<>();
         this.directed = directed;
         this.weighted = weighted;
+        this.vertices = new HashSet<>();
     }
 
     public void addEdge(int from, int to, int weight){
@@ -108,8 +109,10 @@ public class Graph {
         q.add(source);
         while(!q.isEmpty()){
             int u = q.poll();
+            System.out.println("Now visiting: "+u);
             for(Pair p : this.adjacency_list.get(u)){
                 int v = p.getFirst();
+                System.out.println("Hello, i'm: "+v);
                 if(!visited[v]){
                     q.add(v);
                     visited[v] = true;
@@ -132,4 +135,6 @@ public class Graph {
     public void resetPredeccesors(){
         this.predecessors.clear();
     }
+
+    public HashMap<Integer,ArrayList<Pair>> getAdjacency_list(){return this.adjacency_list;}
 }
