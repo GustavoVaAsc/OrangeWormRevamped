@@ -4,7 +4,7 @@ import java.lang.Math;
 // h_function uses Haversine distance
 
 // V = D/t -> t = D/V
-public class EuclideanHeuristic implements Heuristic{
+public class HaversineHeuristic implements Heuristic{
     private static final double EARTH_RADIUS = 6371.0; // km
     private static final double AVG_SPEED = 33.4; // km/h
 

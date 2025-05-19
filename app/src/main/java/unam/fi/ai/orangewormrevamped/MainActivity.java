@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         UserManager.current_user = new User("Temporal","12345678");
         UserManager.current_user.loadGraph(this);
         UserManager.current_user.createGraph();
+
+        // Dummy predefined routes
+
+        //UserManager.current_user.
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

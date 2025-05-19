@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.Set;
-import unam.fi.ai.orangewormrevamped.appobjects.heuristics.EuclideanHeuristic;
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.Heuristic;
 
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.content.res.AssetManager;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.Objects;
 //import java.util.concurrent.ThreadLocalRandom;
 
 public class User {
@@ -25,7 +23,7 @@ public class User {
     private String password;
     HashMap<Integer,Station> station_db; // K: station_id, V: Station object
     ArrayList<Route> saved_routes;
-    Graph subway;
+    public Graph subway;
     HashMap<String,Integer> line_sizes;
     HashMap<String,Integer> transfer_times;
     HashMap<String, ArrayList<Integer>> line_station_ids;
@@ -182,7 +180,7 @@ public class User {
             System.out.println("Name: "+this.station_db.get(dum).getName());
         }
         this.subway.resetPredeccesors();
-        Heuristic euclidean = new EuclideanHeuristic();
+        Heuristic euclidean = new HaversineHeuristic();
         ArrayList<Integer> dummy2 = this.subway.optimalPath(1,99,euclidean);
 
         System.out.println("Dummy size: "+dummy2.size());
@@ -232,8 +230,8 @@ public class User {
 
         return (bestRoute != null) ? bestRoute : "No recommendation yet";
     }
-    public void addNewRoute(Route to_add){
-        this.saved_routes.add(to_add);
+    public void addNewRoute(){
+
     }
 
     public HashMap<Integer, Station> getStation_db() {
