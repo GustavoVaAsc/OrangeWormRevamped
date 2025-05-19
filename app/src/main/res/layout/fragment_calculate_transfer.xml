@@ -9,15 +9,16 @@
         android:id="@+id/startStation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Station ID"
-        android:inputType="number" />
+        android:hint="Start Station"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/endStation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="End Station ID"
-        android:inputType="number" />
+        android:hint="End Station"
+        android:inputType="text" />
+
 
     <Button
         android:id="@+id/bfsButton"

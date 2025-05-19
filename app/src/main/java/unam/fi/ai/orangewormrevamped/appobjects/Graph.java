@@ -20,12 +20,14 @@ public class Graph {
     private ArrayList<Integer> distances;
     private ArrayList<Integer> predecessors;
     private HashMap<Integer,Station> station_db;
+    private HashMap<String,Integer> reverse_db;
 
     public Graph(boolean directed, boolean weighted){
         this.adjacency_list = new HashMap<>();
         this.directed = directed;
         this.weighted = weighted;
         this.vertices = new HashSet<>();
+        this.reverse_db = new HashMap<>();
     }
 
     public void addEdge(int from, int to, int weight){
@@ -187,5 +189,13 @@ public class Graph {
     public HashMap<Integer,ArrayList<Pair>> getAdjacency_list(){return this.adjacency_list;}
 
     public void setStation_db(HashMap<Integer,Station> a){this.station_db = a;}
+
+    public void setValueOnReverseDB(String s, Integer x){
+        this.reverse_db.put(s,x);
+    }
+
+    public Integer queryReverseDB(String s){
+        return this.reverse_db.get(s);
+    }
 
 }

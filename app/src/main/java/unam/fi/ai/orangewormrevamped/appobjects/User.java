@@ -135,6 +135,12 @@ public class User {
     public void createGraph() {
         this.subway = new Graph(false, true);
         this.subway.setStation_db(this.station_db);
+
+        for(int i=1; i<=163; i++){
+            Station to_reverse = this.station_db.get(i);
+            this.subway.setValueOnReverseDB(to_reverse.getName(),i);
+        }
+
         Set<String> addedEdges = new HashSet<>();
 
         for (Map.Entry<String, ArrayList<Integer>> entry : line_station_ids.entrySet()) {

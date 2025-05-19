@@ -10,6 +10,7 @@ import android.view.Menu;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private boolean isCalculateTransferFragmentOpen = false;
+    private static final String CALCULATE_TRANSFER_TAG = "calculate_transfer_fragment";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +43,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(view -> {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
-                            android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                    .replace(R.id.nav_host_fragment_content_main, new CalculateTransferFragment())
-                    .addToBackStack(null)
-                    .commit();
+        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isCalculateTransferFragmentOpen) {
+                    isCalculateTransferFragmentOpen = true;
 
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                                    android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                            .replace(R.id.nav_host_fragment_content_main, new CalculateTransferFragment(), CALCULATE_TRANSFER_TAG)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
         });
+
+
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -60,6 +73,37 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            // If any other fragment is opened, remove CalculateTransferFragment
+            if (isCalculateTransferFragmentOpen && id != R.id.nav_calculatetime) {
+                Fragment calculateFragment = getSupportFragmentManager().findFragmentByTag(CALCULATE_TRANSFER_TAG);
+                if (calculateFragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(calculateFragment).commit();
+                }
+                isCalculateTransferFragmentOpen = false;
+            }
+
+            if (id == R.id.nav_calculatetime) {
+                if (!isCalculateTransferFragmentOpen) {
+                    isCalculateTransferFragmentOpen = true;
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment_content_main, new CalculateTransferFragment(), CALCULATE_TRANSFER_TAG)
+                            .addToBackStack(null)
+                            .commit();
+                }
+                drawer.closeDrawers();
+                return true;
+            } else {
+                drawer.closeDrawers();
+                return NavigationUI.onNavDestinationSelected(item,
+                        Navigation.findNavController(this, R.id.nav_host_fragment_content_main))
+                        || super.onOptionsItemSelected(item);
+            }
+        });
 
 
     }
@@ -77,4 +121,17 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void setCalculateTransferFragmentOpen(boolean isOpen) {
+        this.isCalculateTransferFragmentOpen = isOpen;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Fragment f = getSupportFragmentManager().findFragmentByTag(CALCULATE_TRANSFER_TAG);
+        isCalculateTransferFragmentOpen = f != null;
+    }
+
+
 }
