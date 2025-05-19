@@ -1,6 +1,7 @@
 package unam.fi.ai.orangewormrevamped;
 import unam.fi.ai.orangewormrevamped.appobjects.*;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import unam.fi.ai.orangewormrevamped.databinding.ActivityMainBinding;
+import unam.fi.ai.orangewormrevamped.ui.calculatetime.CalculateTransferActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .setAnchorView(R.id.fab).show();
+                Intent intent = new Intent(MainActivity.this, CalculateTransferActivity.class);
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
