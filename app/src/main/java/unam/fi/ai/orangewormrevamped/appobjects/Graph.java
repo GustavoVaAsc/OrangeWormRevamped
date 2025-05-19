@@ -1,6 +1,7 @@
 package unam.fi.ai.orangewormrevamped.appobjects;
 import android.graphics.LinearGradient;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ public class Graph {
     private boolean weighted; // Flag for weighted graph
     private ArrayList<Integer> distances;
     private ArrayList<Integer> predecessors;
+    private HashMap<Integer,Station> station_db;
+
     public Graph(boolean directed, boolean weighted){
         this.adjacency_list = new HashMap<>();
         this.directed = directed;
@@ -57,41 +60,76 @@ public class Graph {
 
 
     // TODO:  Add heuristic calculation, and convert this function into arraylist
-    public void optimalPath(int source, Heuristic heuristic){
-        this.distances = new ArrayList<Integer>(vertices.size()+1);
-        this.predecessors = new ArrayList<Integer>(vertices.size()+1);
+    public ArrayList<Integer> optimalPath(int source, int goal, Heuristic heuristic) {
+        System.out.println("This is AStar");
+        int n = vertices.size() + 1;
 
-        Collections.addAll(this.distances, Integer.MAX_VALUE); // MAX_VALUE is INF
-        Collections.addAll(this.predecessors, -1);
+        double source_lat = station_db.get(source).getLatitude();
+        double source_long = station_db.get(source).getLongitude();
 
-        this.distances.set(source, 0);
-        this.predecessors.set(source, 0);
-        PriorityQueue<Pair> open_set = new PriorityQueue<Pair>();
+        double goal_lat = station_db.get(goal).getLatitude();
+        double goal_long = station_db.get(goal).getLongitude();
 
-        Pair first_element = new Pair(source, 0);
-        open_set.add(first_element);
+        distances = new ArrayList<>(Collections.nCopies(n, Integer.MAX_VALUE));
+        predecessors = new ArrayList<>(Collections.nCopies(n, -1));
 
-        while(!open_set.isEmpty()){
-            int u = open_set.peek().getFirst();
-            int d = open_set.peek().getSecond();
-            open_set.poll();
+        distances.set(source, 0);
+        predecessors.set(source, 0);
 
-            if(d > this.distances.indexOf(u)) continue;
+        PriorityQueue<Pair> openSet = new PriorityQueue<>();
 
-            for(Pair e : this.adjacency_list.get(u)){
-                int v = e.getFirst();
-                int w = e.getSecond();
+        int fScoreSource = heuristic.h_function(source_long, goal_long, source_lat, goal_lat);
+        openSet.add(new Pair(source, fScoreSource));
 
-                if (this.distances.indexOf(u) + w < this.distances.indexOf(v)){
-                    this.distances.set(v, this.distances.indexOf(u) + w);
-                    this.predecessors.set(v,u);
-                    Pair new_pair = new Pair(v, this.distances.indexOf(v));
-                    open_set.add(new_pair);
+        while (!openSet.isEmpty()) {
+            Pair current = openSet.poll();
+            int u = current.getFirst();
+
+            //if (u == goal) break; // Early exit if goal is reached
+
+            for (Pair edge : adjacency_list.getOrDefault(u, new ArrayList<>())) {
+                int v = edge.getFirst();
+                int weight = edge.getSecond();
+
+                //System.out.println("Now visiting: "+v);
+
+                double v_lat = station_db.get(v).getLatitude();
+                double v_long = station_db.get(v).getLongitude();
+
+                int tentative_gScore = distances.get(u) + weight;
+
+                if (tentative_gScore < distances.get(v)) {
+                    distances.set(v, tentative_gScore);
+                    predecessors.set(v, u);
+
+                    int fScore = tentative_gScore + heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
+                    openSet.add(new Pair(v, fScore));
                 }
             }
         }
+        // Reconstruct path from destination to source using predecessors
+        ArrayList<Integer> route = new ArrayList<>();
+        int current = goal;
 
+        if (predecessors.get(current) == -1 && current != source) {
+            // No path found
+            return route;
+        }
+
+        while (current != -1) {
+            route.add(current);
+            current = predecessors.get(current);
+        }
+        /*
+        for(int i=1; i<=163;i++){
+            System.out.println("Distance of "+i+" is: "+distances.indexOf(i));
+        }
+
+         */
+        Collections.reverse(route);
+        return route;
     }
+
 
      /*
 
@@ -147,4 +185,7 @@ public class Graph {
     }
 
     public HashMap<Integer,ArrayList<Pair>> getAdjacency_list(){return this.adjacency_list;}
+
+    public void setStation_db(HashMap<Integer,Station> a){this.station_db = a;}
+
 }

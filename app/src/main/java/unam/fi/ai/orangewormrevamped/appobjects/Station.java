@@ -1,5 +1,6 @@
 package unam.fi.ai.orangewormrevamped.appobjects;
 import java.util.HashSet;
+
 public class Station {
     private int id;
     private String name;
@@ -21,4 +22,6 @@ public class Station {
     public String getName(){return this.name;}
     public int getId(){return this.id;}
     public HashSet<String> getLines(){return this.lines;}
+    public double getLatitude(){return this.latitude;}
+    public double getLongitude(){return this.longitude;}
 }

@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.Set;
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.EuclideanHeuristic;
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.Heuristic;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -134,6 +136,7 @@ public class User {
 
     public void createGraph() {
         this.subway = new Graph(false, true);
+        this.subway.setStation_db(this.station_db);
         Set<String> addedEdges = new HashSet<>();
 
         for (Map.Entry<String, ArrayList<Integer>> entry : line_station_ids.entrySet()) {
@@ -147,7 +150,7 @@ public class User {
                 String edgeKey2 = to + "-" + from;
 
                 if (!addedEdges.contains(edgeKey1) && !addedEdges.contains(edgeKey2)) {
-                    subway.addEdge(from, to, 1);
+                    subway.addEdge(from, to, 3 + (int)(Math.random() * 10));
                     addedEdges.add(edgeKey1);
                     addedEdges.add(edgeKey2);
                 }
@@ -173,10 +176,62 @@ public class User {
             }
         }
          */
+        ArrayList<Integer> dummy = this.subway.leastStationsPath(1,99);
+
+        for(Integer dum : dummy){
+            System.out.println("Name: "+this.station_db.get(dum).getName());
+        }
+        this.subway.resetPredeccesors();
+        Heuristic euclidean = new EuclideanHeuristic();
+        ArrayList<Integer> dummy2 = this.subway.optimalPath(1,99,euclidean);
+
+        System.out.println("Dummy size: "+dummy2.size());
+
+        for(Integer dum : dummy2){
+            if(dum == 0) continue;
+            System.out.println("Name: "+this.station_db.get(dum).getName());
+        }
+
 
 
     }
 
+
+    public void useRoute(String routeName) {
+        for (Route route : saved_routes) {
+            if (route.getName().equals(routeName)) {
+                route.useRoute();
+                break;
+            }
+        }
+    }
+
+    public String recommendedRoute(int currentHour) {
+        // Build frequency table: routeName -> hour -> count
+        Map<String, Map<Integer, Integer>> frequencyMap = new HashMap<>();
+
+        for (Route route : saved_routes) {
+            String name = route.getName();
+            frequencyMap.putIfAbsent(name, new HashMap<>());
+            for (int hour : route.getUsageHours()) {
+                frequencyMap.get(name).merge(hour, 1, Integer::sum);
+            }
+        }
+
+        // Decision Tree (simplified): return route with highest count at that hour
+        String bestRoute = null;
+        int maxCount = -1;
+
+        for (Map.Entry<String, Map<Integer, Integer>> entry : frequencyMap.entrySet()) {
+            int count = entry.getValue().getOrDefault(currentHour, 0);
+            if (count > maxCount) {
+                maxCount = count;
+                bestRoute = entry.getKey();
+            }
+        }
+
+        return (bestRoute != null) ? bestRoute : "No recommendation yet";
+    }
     public void addNewRoute(Route to_add){
         this.saved_routes.add(to_add);
     }
