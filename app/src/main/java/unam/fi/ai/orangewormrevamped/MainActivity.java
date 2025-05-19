@@ -1,14 +1,15 @@
 package unam.fi.ai.orangewormrevamped;
 import unam.fi.ai.orangewormrevamped.appobjects.*;
+import unam.fi.ai.orangewormrevamped.ui.calculatetime.CalculateTransferFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,7 +18,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import unam.fi.ai.orangewormrevamped.databinding.ActivityMainBinding;
-import unam.fi.ai.orangewormrevamped.ui.calculatetime.CalculateTransferActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +38,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CalculateTransferActivity.class);
-                startActivity(intent);
-            }
+        binding.appBarMain.fab.setOnClickListener(view -> {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                            android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.nav_host_fragment_content_main, new CalculateTransferFragment())
+                    .addToBackStack(null)
+                    .commit();
+
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
