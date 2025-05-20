@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import unam.fi.ai.orangewormrevamped.databinding.ActivityMainBinding;
+import unam.fi.ai.orangewormrevamped.ui.subwaymap.MetroMapActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,8 +98,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 drawer.closeDrawers();
                 return true;
-            } else {
+            } else if (id == R.id.nav_subwaymap) {
+                // ¡Aquí interceptamos el click en “Mapa del Metro”!
+                Intent intent = new Intent(MainActivity.this, MetroMapActivity.class);
+                startActivity(intent);
+
                 drawer.closeDrawers();
+                return true;
+            }
+            else {
+                drawer.closeDrawers();
+                // Dejamos que NavigationUI maneje el resto
                 return NavigationUI.onNavDestinationSelected(item,
                         Navigation.findNavController(this, R.id.nav_host_fragment_content_main))
                         || super.onOptionsItemSelected(item);
