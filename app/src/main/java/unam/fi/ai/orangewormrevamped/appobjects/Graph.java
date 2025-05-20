@@ -63,7 +63,7 @@ public class Graph {
 
     // TODO:  Add heuristic calculation, and convert this function into arraylist
     public ArrayList<Integer> optimalPath(int source, int goal, Heuristic heuristic) {
-        System.out.println("This is AStar");
+        //System.out.println("This is AStar");
         int n = vertices.size() + 1;
 
         double source_lat = station_db.get(source).getLatitude();
@@ -76,7 +76,7 @@ public class Graph {
         predecessors = new ArrayList<>(Collections.nCopies(n, -1));
 
         distances.set(source, 0);
-        predecessors.set(source, 0);
+        predecessors.set(source, -1);
 
         PriorityQueue<Pair> openSet = new PriorityQueue<>();
 
@@ -122,12 +122,11 @@ public class Graph {
             route.add(current);
             current = predecessors.get(current);
         }
-        /*
+
         for(int i=1; i<=163;i++){
-            System.out.println("Distance of "+i+" is: "+distances.indexOf(i));
+            System.out.println("Distance of " + i + " is: " + distances.get(i));
         }
 
-         */
         Collections.reverse(route);
         return route;
     }
@@ -153,7 +152,7 @@ public class Graph {
             int u = q.poll();
             for (Pair p : this.adjacency_list.get(u)) {
                 int v = p.getFirst();
-                System.out.println("Now visiting: "+v);
+                //System.out.println("Now visiting: "+v);
                 if (!visited[v]) {
                     visited[v] = true;
                     predecessors.set(v, u);
@@ -194,8 +193,16 @@ public class Graph {
         this.reverse_db.put(s,x);
     }
 
+    public String queryByNameOnDB(Integer id){
+        return this.station_db.get(id).getName();
+    }
+
     public Integer queryReverseDB(String s){
         return this.reverse_db.get(s);
+    }
+
+    public Integer queryDistance(Integer u){
+        return this.distances.get(u);
     }
 
 }

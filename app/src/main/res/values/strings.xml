@@ -6,7 +6,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Acerca de</string>
 
-    <string name="menu_home">Menú principal</string>
-    <string name="menu_gallery">Mis rutas</string>
-    <string name="menu_slideshow">Mi cuenta</string>
+    <string name="menu_home">MENÚ PRINCIPAL</string>
+    <string name="menu_gallery">MIS RUTAS</string>
+    <string name="menu_slideshow">MI CUENTA</string>
 </resources>

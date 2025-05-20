@@ -1,36 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="16dp">
 
-    <EditText
-        android:id="@+id/startStation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Station"
-        android:inputType="text" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/endStation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Station"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/startStation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Estación inicial"
+            android:inputType="text"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/endStation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Estación destino"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/bfsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruta con menos estaciones"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/astarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruta con menor tiempo de traslado"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="La ruta aparecerá aquí"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:padding="8dp"
+            android:background="#EEEEEE"
+            android:layout_marginBottom="16dp" />
 
 
-    <Button
-        android:id="@+id/bfsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Minimum Stations (BFS)"
-        android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/saveRouteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar ruta" />
 
-    <Button
-        android:id="@+id/astarButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Minimum Transfer Time (A*)"
-        android:layout_marginTop="8dp" />
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

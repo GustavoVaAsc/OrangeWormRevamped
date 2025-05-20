@@ -1,7 +1,7 @@
 ID,Nombre,Lineas,Latitud,Longitud
 20,Pantitlán,1-5-9-A,19.4151186,-99.0769359
 72,Hangares,5,19.424142,-99.087496
-73,Termminal Aereo,5,19.433734,-99.087667
+73,Terminal Aerea,5,19.433734,-99.087667
 74,Oceania,5-B,19.445672,-99.087238
 75,Aragon,5,19.451236,-99.095886
 76,Eduardo Molina,5,19.451378,-99.105434
@@ -11,4 +11,4 @@ ID,Nombre,Lineas,Latitud,Longitud
 47,La Raza,3-5,19.4702017,-99.1385607
 79,Autobuses del Norte,5,9.478973,-99.140668
 80,Instituto del Petroleo,5-6,19.489573,-99.14526
-81,Politecnico,5,19.50082,-99.149294
+81,Politécnico,5,19.50082,-99.149294
