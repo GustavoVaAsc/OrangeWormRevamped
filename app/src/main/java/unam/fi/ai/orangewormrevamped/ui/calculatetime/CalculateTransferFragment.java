@@ -45,8 +45,11 @@ public class CalculateTransferFragment extends Fragment {
                 String st_station = startStationField.getText().toString();
                 String end_station = endStationField.getText().toString();
 
-                int start = UserManager.current_user.subway.queryReverseDB(st_station);
-                int end = UserManager.current_user.subway.queryReverseDB(end_station);
+                String lw_st_station = UserManager.current_user.toLowerSnake(st_station);
+                String lw_end_station = UserManager.current_user.toLowerSnake(end_station);
+
+                int start = UserManager.current_user.subway.queryReverseDB(lw_st_station);
+                int end = UserManager.current_user.subway.queryReverseDB(lw_end_station);
 
                 lastRoute = UserManager.current_user.subway.leastStationsPath(start, end);
                 displayRoute(lastRoute, "Ruta con menos estaciones", 0);
@@ -61,8 +64,11 @@ public class CalculateTransferFragment extends Fragment {
                 String st_station = startStationField.getText().toString();
                 String end_station = endStationField.getText().toString();
 
-                int start = UserManager.current_user.subway.queryReverseDB(st_station);
-                int end = UserManager.current_user.subway.queryReverseDB(end_station);
+                String lw_st_station = UserManager.current_user.toLowerSnake(st_station);
+                String lw_end_station = UserManager.current_user.toLowerSnake(end_station);
+
+                int start = UserManager.current_user.subway.queryReverseDB(lw_st_station);
+                int end = UserManager.current_user.subway.queryReverseDB(lw_end_station);
 
                 lastRoute = UserManager.current_user.subway.optimalPath(start, end, new HaversineHeuristic());
                 lastRoute.removeIf(id -> id == 0);

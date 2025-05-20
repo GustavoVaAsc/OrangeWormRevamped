@@ -141,7 +141,7 @@ public class User {
 
         for(int i=1; i<=163; i++){
             Station to_reverse = this.station_db.get(i);
-            this.subway.setValueOnReverseDB(to_reverse.getName(),i);
+            this.subway.setValueOnReverseDB(toLowerSnake(to_reverse.getName()),i);
         }
 
         Set<String> addedEdges = new HashSet<>();
