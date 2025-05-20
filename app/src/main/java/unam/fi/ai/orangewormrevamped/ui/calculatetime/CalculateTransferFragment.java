@@ -1,5 +1,6 @@
 package unam.fi.ai.orangewormrevamped.ui.calculatetime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import unam.fi.ai.orangewormrevamped.R;
 import unam.fi.ai.orangewormrevamped.appobjects.Route;
 import unam.fi.ai.orangewormrevamped.appobjects.UserManager;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
+import unam.fi.ai.orangewormrevamped.ui.routedetails.RouteDetailsActivity;
 
 public class CalculateTransferFragment extends Fragment {
 
@@ -35,6 +37,7 @@ public class CalculateTransferFragment extends Fragment {
         Button bfsButton = root.findViewById(R.id.bfsButton);
         Button astarButton = root.findViewById(R.id.astarButton);
         Button saveButton = root.findViewById(R.id.saveRouteButton);
+        Button showDetailsButton = root.findViewById(R.id.showDetailsButton);
         resultText = root.findViewById(R.id.resultText);
 
         bfsButton.setOnClickListener(v -> {
@@ -86,6 +89,15 @@ public class CalculateTransferFragment extends Fragment {
             }
         });
 
+        showDetailsButton.setOnClickListener(v -> {
+            if (lastRoute != null && !lastRoute.isEmpty()) {
+                Intent intent = new Intent(requireContext(), RouteDetailsActivity.class);
+                intent.putExtra("station_ids", lastRoute);
+                startActivity(intent);
+            } else {
+                showToast("No hay ruta generada para mostrar");
+            }
+        });
 
         return root;
     }
@@ -105,6 +117,8 @@ public class CalculateTransferFragment extends Fragment {
             resultText.setText(sb.toString());
         }
     }
+
+
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
