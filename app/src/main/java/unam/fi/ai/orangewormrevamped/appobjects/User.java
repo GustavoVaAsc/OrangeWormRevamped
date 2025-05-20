@@ -35,6 +35,7 @@ public class User {
         this.line_sizes = new HashMap<>();
         this.transfer_times = new HashMap<>();
         this.line_station_ids = new HashMap<>();
+        this.saved_routes = new ArrayList<>();
 
         // TODO: Change this to array + for loop
         line_sizes.put("1",20);
@@ -236,8 +237,12 @@ public class User {
 
         return (bestRoute != null) ? bestRoute : "No recommendation yet";
     }
-    public void addNewRoute(){
+    public void addNewRoute(Route r){
+        this.saved_routes.add(r);
+    }
 
+    public Integer getNumberOfRoutes(){
+        return this.saved_routes.size();
     }
 
     public HashMap<Integer, Station> getStation_db() {

@@ -6,7 +6,7 @@ import java.lang.Math;
 // V = D/t -> t = D/V
 public class HaversineHeuristic implements Heuristic{
     private static final double EARTH_RADIUS = 6371.0; // km
-    private static final double AVG_SPEED = 33.4; // km/h
+    private static final double AVG_SPEED = 60.5; // km/h
 
     public double haversine(double a){
         return Math.sin(a/2) * Math.sin(a/2);

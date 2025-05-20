@@ -25,7 +25,7 @@
         <item
             android:id="@+id/nav_calculatetime"
             android:icon="@drawable/ic_baseline_directions_transit_24"
-            android:title="CALCULTATE TRANSFER TIME" />
+            android:title="CALCULAR RUTA" />
 
 
     </group>
