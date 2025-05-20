@@ -30,4 +30,11 @@ public class Route {
     public String getName() {
         return name;
     }
+
+    public Integer queryStationList(int i){
+        return this.station_list.get(i);
+    }
+    public Integer getNumberOfStations(){
+        return this.number_of_stations;
+    }
 }

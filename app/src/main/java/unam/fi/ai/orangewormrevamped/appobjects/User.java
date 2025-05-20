@@ -100,14 +100,15 @@ public class User {
                         HashSet<String> line_set = new HashSet<>(Arrays.asList(line_parse));
                         double lat = Double.parseDouble(parts[3]);
                         double lon = Double.parseDouble(parts[4]);
-
+                        String file_name = UserManager.current_user.toLowerSnake(name);
+                        String file = "L"+line+"/"+file_name+".png";
                         // Merge or create Station
                         Station station;
                         if (station_db.containsKey(id)) {
                             station = station_db.get(id);
                             station.getLines().addAll(line_set);
                         } else {
-                            station = new Station(id, name, line_set, lat, lon);
+                            station = new Station(id, name, line_set, lat, lon, file);
                             station_db.put(id, station);
                         }
 
@@ -237,6 +238,25 @@ public class User {
 
         return (bestRoute != null) ? bestRoute : "No recommendation yet";
     }
+
+    public String toLowerSnake(String s){
+        HashMap<Character,Character> character_handler = new HashMap<>();
+        character_handler.put('á','a');
+        character_handler.put('é','e');
+        character_handler.put('í','i');
+        character_handler.put('ó','o');
+        character_handler.put('ú','u');
+        character_handler.put('ñ','n');
+        character_handler.put(' ','_');
+        StringBuilder result = new StringBuilder(s.toLowerCase());
+
+        for(int i=0; i<result.length(); i++){
+            if(character_handler.containsKey(result.charAt(i))){
+                result.setCharAt(i,character_handler.get(result.charAt(i)));
+            }
+        }
+        return result.toString();
+    }
     public void addNewRoute(Route r){
         this.saved_routes.add(r);
     }
@@ -247,5 +267,9 @@ public class User {
 
     public HashMap<Integer, Station> getStation_db() {
         return station_db;
+    }
+
+    public ArrayList<Route> getSavedRoutes(){
+        return this.saved_routes;
     }
 }

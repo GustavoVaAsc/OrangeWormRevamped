@@ -197,6 +197,10 @@ public class Graph {
         return this.station_db.get(id).getName();
     }
 
+    public Station queryStation(Integer id){
+        return this.station_db.get(id);
+    }
+
     public Integer queryReverseDB(String s){
         return this.reverse_db.get(s);
     }

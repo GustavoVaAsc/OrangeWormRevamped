@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <!-- Start station icon -->
+    <ImageView
+        android:id="@+id/startStationIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_station"
+        android:contentDescription="Start station icon"
+        android:layout_marginEnd="8dp" />
+
+    <!-- End station icon -->
+    <ImageView
+        android:id="@+id/endStationIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_station"
+        android:contentDescription="End station icon"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Route name -->
+    <TextView
+        android:id="@+id/routeName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Route name"
+        android:textSize="18sp"
+        android:layout_weight="1"
+        android:textColor="@color/route_text" />
+
+</LinearLayout>
