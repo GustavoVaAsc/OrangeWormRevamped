@@ -26,6 +26,15 @@
             android:inputType="text"
             android:layout_marginBottom="16dp" />
 
+        <EditText
+            android:id="@+id/routeNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de la ruta"
+            android:inputType="textPersonName"
+            android:layout_marginTop="16dp" />
+
+
         <Button
             android:id="@+id/bfsButton"
             android:layout_width="wrap_content"

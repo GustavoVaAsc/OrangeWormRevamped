@@ -31,6 +31,7 @@ public class CalculateTransferFragment extends Fragment {
 
         EditText startStationField = root.findViewById(R.id.startStation);
         EditText endStationField = root.findViewById(R.id.endStation);
+        EditText routeNameInput = root.findViewById(R.id.routeNameInput);
         Button bfsButton = root.findViewById(R.id.bfsButton);
         Button astarButton = root.findViewById(R.id.astarButton);
         Button saveButton = root.findViewById(R.id.saveRouteButton);
@@ -73,13 +74,18 @@ public class CalculateTransferFragment extends Fragment {
 
         saveButton.setOnClickListener(v -> {
             if (lastRoute != null && !lastRoute.isEmpty()) {
-                Route route = new Route("Saved Route " + (UserManager.current_user.getNumberOfRoutes() + 1), lastRoute);
+                String routeName = routeNameInput.getText().toString().trim();
+                if (routeName.isEmpty()) {
+                    routeName = "Ruta guardada " + (UserManager.current_user.getNumberOfRoutes() + 1);
+                }
+                Route route = new Route(routeName, lastRoute);
                 UserManager.current_user.addNewRoute(route);
-                showToast("Ruta guardada con éxito");
+                showToast("Ruta guardada como: " + routeName);
             } else {
                 showToast("No hay una ruta por guardar");
             }
         });
+
 
         return root;
     }
