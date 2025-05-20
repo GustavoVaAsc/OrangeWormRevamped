@@ -70,6 +70,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
         }
 
         private void loadImageFromAssets(Context context, String path, ImageView imageView) {
+            System.out.println("This is the path"+path);
             try (InputStream is = context.getAssets().open(path)) {
                 Bitmap bitmap = BitmapFactory.decodeStream(is);
                 imageView.setImageBitmap(bitmap);

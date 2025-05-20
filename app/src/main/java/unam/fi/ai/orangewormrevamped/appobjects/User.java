@@ -101,7 +101,8 @@ public class User {
                         double lat = Double.parseDouble(parts[3]);
                         double lon = Double.parseDouble(parts[4]);
                         String file_name = UserManager.current_user.toLowerSnake(name);
-                        String file = "L"+line+"/"+file_name+".png";
+                        String file = "icons/L"+line_set.iterator().next()+"/"+file_name+".png";
+                        System.out.println("This is the file: "+file);
                         // Merge or create Station
                         Station station;
                         if (station_db.containsKey(id)) {
