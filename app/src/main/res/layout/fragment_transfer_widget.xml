@@ -24,6 +24,14 @@
             android:columnCount="4"
             android:layout_marginBottom="16dp"/>
 
+        <LinearLayout
+            android:id="@+id/recommendedRouteContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/legendRoutes"
             android:layout_width="wrap_content"

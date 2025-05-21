@@ -25,7 +25,7 @@ public class DecisionTree {
         return classify(instance, root);
     }
 
-    public void predictCurrentRoute(DecisionTree dt, String lastUsedRoute, double distance) {
+    public String predictCurrentRoute(DecisionTree dt, String lastUsedRoute, double distance) {
         // Get current hour
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);  // 0 - 23
@@ -41,6 +41,7 @@ public class DecisionTree {
         // Predict the best route
         String prediction = dt.predict(query);
         System.out.println("Predicted best route at hour " + hour + " on a " + typeOfDay + ": " + prediction);
+        return prediction;
     }
 
     private String classify(RouteInstance instance, DecisionTreeNode node) {

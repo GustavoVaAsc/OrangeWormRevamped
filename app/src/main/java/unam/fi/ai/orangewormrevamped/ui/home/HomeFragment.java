@@ -1,5 +1,6 @@
 package unam.fi.ai.orangewormrevamped.ui.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,10 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import unam.fi.ai.orangewormrevamped.MainActivity;
+import unam.fi.ai.orangewormrevamped.appobjects.Route;
 
 
 import java.util.HashMap;
@@ -27,6 +32,7 @@ import unam.fi.ai.orangewormrevamped.appobjects.User;
 import unam.fi.ai.orangewormrevamped.appobjects.UserManager;
 import unam.fi.ai.orangewormrevamped.databinding.FragmentHomeBinding;
 import unam.fi.ai.orangewormrevamped.ui.gallery.RouteAdapter;
+import unam.fi.ai.orangewormrevamped.ui.routedetails.RouteDetailsActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -73,9 +79,24 @@ public class HomeFragment extends Fragment {
         RecyclerView routeRecyclerView = root.findViewById(R.id.routeRecyclerView);
         routeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        RouteAdapter adapter = new RouteAdapter(UserManager.current_user.getSavedRoutes(), route ->
-                Toast.makeText(getContext(), "Clicked: " + route.getName(), Toast.LENGTH_SHORT).show()
-        );
+        List<Route> r = new ArrayList<>();
+        r.add(getPredictedRoute());
+
+        RouteAdapter adapter = new RouteAdapter(r, route -> {
+            // When a route is clicked:
+
+            Intent intent = new Intent(getContext(), RouteDetailsActivity.class);
+
+            // Pass the station IDs list (make sure it's Serializable or use ArrayList<Integer>)
+            intent.putIntegerArrayListExtra("station_ids", new ArrayList<>(route.getStation_list()));
+
+            // Start the activity (if in fragment, use getContext() or getActivity())
+            getContext().startActivity(intent);
+
+            // Optional: show a toast or do other UI stuff
+            Toast.makeText(getContext(), "Clicked route: " + route.getName(), Toast.LENGTH_SHORT).show();
+        });
+
 
         routeRecyclerView.setAdapter(adapter);
 
@@ -168,5 +189,13 @@ public class HomeFragment extends Fragment {
 
 
         }
+    }
+
+    @Nullable
+    private Route getPredictedRoute() {
+        if (getActivity() instanceof MainActivity) {
+            return ((MainActivity) getActivity()).predicted_route;
+        }
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package unam.fi.ai.orangewormrevamped;
 import unam.fi.ai.orangewormrevamped.appobjects.*;
 import unam.fi.ai.orangewormrevamped.appobjects.decisiontree.*;
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
 import unam.fi.ai.orangewormrevamped.ui.calculatetime.CalculateTransferFragment;
 
 import android.content.Intent;
@@ -20,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import unam.fi.ai.orangewormrevamped.databinding.ActivityMainBinding;
 import unam.fi.ai.orangewormrevamped.ui.subwaymap.MetroMapActivity;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isCalculateTransferFragmentOpen = false;
     private static final String CALCULATE_TRANSFER_TAG = "calculate_transfer_fragment";
 
-
+    public Route predicted_route;
     public boolean isCalculateTransferFragmentOpen() {
         Fragment f = getSupportFragmentManager().findFragmentByTag(CALCULATE_TRANSFER_TAG);
         return f != null && f.isVisible();
@@ -48,11 +50,28 @@ public class MainActivity extends AppCompatActivity {
         UserManager.current_user.createGraph();
         UserManager.current_user.loadUserRoutes(this);
         DecisionTree dt = new DecisionTree();
-        List<RouteInstance> to_train = dt.convertRoutesToInstances(UserManager.current_user.getSavedRoutes());
-        Trainer trainer = new Trainer();
-        trainer.invokeTrainer(to_train,dt);
+        List<Route> savedRoutes = UserManager.current_user.getSavedRoutes();
+        if (savedRoutes == null || savedRoutes.isEmpty()) {
+            System.out.println("No routes available.");
+            return;
+        }
 
-        //dt.predictCurrentRoute(dt,);
+        int randomIndex = ThreadLocalRandom.current().nextInt(savedRoutes.size());
+        Route randomRoute = savedRoutes.get(randomIndex);
+
+        List<RouteInstance> to_train = dt.convertRoutesToInstances(savedRoutes);
+        Trainer trainer = new Trainer();
+        trainer.invokeTrainer(to_train, dt);
+        double dist = (double) UserManager.current_user.subway.calculateTransferTime(randomRoute.getStation_list(),new HaversineHeuristic());
+        String route_name = dt.predictCurrentRoute(dt, randomRoute.getName(),dist);
+
+        this.predicted_route = null;
+        for (Route route : UserManager.current_user.getSavedRoutes()) {
+            if (route.getName().equals(route_name)) {
+                predicted_route = route;
+                break;
+            }
+        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -122,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
                         || super.onOptionsItemSelected(item);
             }
         });
-
-
-
 
     }
 
