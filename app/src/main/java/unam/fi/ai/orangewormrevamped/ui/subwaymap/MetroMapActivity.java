@@ -20,23 +20,9 @@ public class MetroMapActivity extends AppCompatActivity {
 
         layoutLineas = findViewById(R.id.layoutLineas);
 
-        // Líneas 1 a 12
-        for (int i = 1; i <= 12; i++) {
-            final String lineaId = String.valueOf(i); // ← Convertir a String
-
-            Button btnLinea = new Button(this);
-            btnLinea.setText("Ver Línea " + lineaId);
-
-            btnLinea.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MetroMapActivity.this, LineaDetalleActivity.class);
-                    intent.putExtra("linea_id", lineaId);
-                    startActivity(intent);
-                }
-            });
-
-            layoutLineas.addView(btnLinea);
+        // Agregar líneas 1–9
+        for (int i = 1; i <= 9; i++) {
+            agregarBotonLinea(String.valueOf(i));
         }
 
         // Línea A
@@ -44,6 +30,9 @@ public class MetroMapActivity extends AppCompatActivity {
 
         // Línea B
         agregarBotonLinea("B");
+
+        // Línea 12
+        agregarBotonLinea("12");
     }
 
     private void agregarBotonLinea(final String lineaId) {
