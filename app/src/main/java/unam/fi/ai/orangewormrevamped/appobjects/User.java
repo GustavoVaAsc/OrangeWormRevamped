@@ -1,11 +1,14 @@
 package unam.fi.ai.orangewormrevamped.appobjects;
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.Math;
+import java.util.List;
 import java.util.Set;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.Heuristic;
@@ -213,10 +216,10 @@ public class User {
         }
     }
 
-    public String recommendedRoute(int currentHour) {
-        // Build frequency table: routeName -> hour -> count
+    public List<String> recommendedRoutes(int currentHour) {
         Map<String, Map<Integer, Integer>> frequencyMap = new HashMap<>();
 
+        // 1. Build frequency table: routeName -> hour -> usageCount
         for (Route route : saved_routes) {
             String name = route.getName();
             frequencyMap.putIfAbsent(name, new HashMap<>());
@@ -225,20 +228,30 @@ public class User {
             }
         }
 
-        // Decision Tree (simplified): return route with highest count at that hour
-        String bestRoute = null;
-        int maxCount = -1;
+        // 2. Collect valid routes with usage count > 3 at currentHour
+        List<Map.Entry<String, Integer>> validRoutes = new ArrayList<>();
 
         for (Map.Entry<String, Map<Integer, Integer>> entry : frequencyMap.entrySet()) {
             int count = entry.getValue().getOrDefault(currentHour, 0);
-            if (count > maxCount) {
-                maxCount = count;
-                bestRoute = entry.getKey();
+            if (count > 3) {
+                validRoutes.add(new AbstractMap.SimpleEntry<>(entry.getKey(), count));
             }
         }
 
-        return (bestRoute != null) ? bestRoute : "No recommendation yet";
+        // 3. Sort routes by usage count (descending)
+        validRoutes.sort((a, b) -> b.getValue() - a.getValue());
+
+        // 4. Collect route names
+        List<String> recommended = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : validRoutes) {
+            recommended.add(entry.getKey());
+        }
+
+        return recommended.isEmpty()
+                ? Collections.singletonList("No strong recommendations at this hour")
+                : recommended;
     }
+
 
     public String toLowerSnake(String s){
         HashMap<Character,Character> character_handler = new HashMap<>();
@@ -272,5 +285,9 @@ public class User {
 
     public ArrayList<Route> getSavedRoutes(){
         return this.saved_routes;
+    }
+
+    public HashMap<String, Integer> getTransfer_times() {
+        return transfer_times;
     }
 }

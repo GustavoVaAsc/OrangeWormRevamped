@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import unam.fi.ai.orangewormrevamped.MainActivity;
 import unam.fi.ai.orangewormrevamped.R;
@@ -87,7 +88,7 @@ public class CalculateTransferFragment extends Fragment {
                 if (routeName.isEmpty()) {
                     routeName = "Ruta guardada " + (UserManager.current_user.getNumberOfRoutes() + 1);
                 }
-                Route route = new Route(routeName, lastRoute);
+                Route route = new Route(routeName, lastRoute, new ArrayList<Integer>());
                 UserManager.current_user.addNewRoute(route);
                 showToast("Ruta guardada como: " + routeName);
             } else {

@@ -11,7 +11,7 @@ public class Route {
     private int number_of_stations;
     private List<Integer> usage_hours; // Stores hours when this route was used
 
-    public Route(String name, ArrayList<Integer> station_list){
+    public Route(String name, ArrayList<Integer> station_list, List<Integer> usage_hours){
         this.name = name;
         this.station_list = station_list;
         this.number_of_stations = station_list.size();
