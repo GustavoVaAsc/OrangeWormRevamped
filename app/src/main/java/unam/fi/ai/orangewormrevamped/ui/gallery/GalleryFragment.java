@@ -1,5 +1,6 @@
 package unam.fi.ai.orangewormrevamped.ui.gallery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import unam.fi.ai.orangewormrevamped.appobjects.UserManager;
 import unam.fi.ai.orangewormrevamped.databinding.FragmentGalleryBinding;
+import unam.fi.ai.orangewormrevamped.ui.routedetails.RouteDetailsActivity;
 
 public class GalleryFragment extends Fragment {
 
@@ -30,9 +34,11 @@ public class GalleryFragment extends Fragment {
         routeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         RouteAdapter adapter = new RouteAdapter(UserManager.current_user.getSavedRoutes(), route -> {
-            // Handle route click
-            Toast.makeText(getContext(), "Clicked: " + route.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), RouteDetailsActivity.class);
+            intent.putIntegerArrayListExtra("station_ids", new ArrayList<>(route.getStation_list()));
+            startActivity(intent);
         });
+
 
         routeRecyclerView.setAdapter(adapter);
 

@@ -37,4 +37,8 @@ public class Route {
     public Integer getNumberOfStations(){
         return this.number_of_stations;
     }
+
+    public ArrayList<Integer> getStation_list() {
+        return station_list;
+    }
 }

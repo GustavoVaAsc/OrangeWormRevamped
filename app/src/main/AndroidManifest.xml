@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".ui.subwaymap.LineaDetalleActivity" />
         <activity android:name=".ui.subwaymap.MetroMapActivity" />
+        <activity android:name=".ui.routedetails.RouteDetailsActivity" />
     </application>
 
 </manifest>
