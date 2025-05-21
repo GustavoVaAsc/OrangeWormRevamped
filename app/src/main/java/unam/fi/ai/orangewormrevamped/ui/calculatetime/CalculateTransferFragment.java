@@ -53,7 +53,8 @@ public class CalculateTransferFragment extends Fragment {
                 int end = UserManager.current_user.subway.queryReverseDB(lw_end_station);
 
                 lastRoute = UserManager.current_user.subway.leastStationsPath(start, end);
-                displayRoute(lastRoute, "Ruta con menos estaciones", 0);
+                int total_time = UserManager.current_user.subway.calculateTransferTime(lastRoute, new HaversineHeuristic());
+                displayRoute(lastRoute, "Ruta con menos estaciones", total_time);
                 UserManager.current_user.subway.resetPredeccesors();
             } catch (Exception e) {
                 showToast("Revise el nombre de las estaciones");

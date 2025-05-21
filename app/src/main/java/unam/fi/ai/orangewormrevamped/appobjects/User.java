@@ -56,8 +56,8 @@ public class User {
 
         String[] lines = {"1","2","3","4","5","6","7","8","9","A","B","12"};
         for (String line : lines) {
-            // Random integer between 3 and 12
-            transfer_times.put(line, 3 + (int)(Math.random() * 10));
+            // Random integer between 3 and 9
+            transfer_times.put(line, 3 + (int)(Math.random() * 7));
         }
 
 
@@ -142,14 +142,15 @@ public class User {
         this.subway = new Graph(false, true);
         this.subway.setStation_db(this.station_db);
 
-        for(int i=1; i<=163; i++){
+        for (int i = 1; i <= 163; i++) {
             Station to_reverse = this.station_db.get(i);
-            this.subway.setValueOnReverseDB(toLowerSnake(to_reverse.getName()),i);
+            this.subway.setValueOnReverseDB(toLowerSnake(to_reverse.getName()), i);
         }
 
         Set<String> addedEdges = new HashSet<>();
 
         for (Map.Entry<String, ArrayList<Integer>> entry : line_station_ids.entrySet()) {
+            String line = entry.getKey();
             ArrayList<Integer> stationIds = entry.getValue();
 
             for (int i = 0; i < stationIds.size() - 1; i++) {
@@ -160,51 +161,19 @@ public class User {
                 String edgeKey2 = to + "-" + from;
 
                 if (!addedEdges.contains(edgeKey1) && !addedEdges.contains(edgeKey2)) {
-                    subway.addEdge(from, to, 3 + (int)(Math.random() * 10));
+                    String curr_line = entry.getKey();
+                    String normalizedLine = curr_line.replace("L", "").toUpperCase();
+                    int transferTime = transfer_times.getOrDefault(normalizedLine, 5);
+                    System.out.println("Transfer time of line "+normalizedLine+": "+transferTime);
+                    subway.addEdge(from, to, transferTime);
+
                     addedEdges.add(edgeKey1);
                     addedEdges.add(edgeKey2);
                 }
             }
         }
-        /*
-        // Optional: print adjacency list sizes
-        for (int i = 1; i <= 163; i++) {
-            ArrayList<Pair> adj = subway.getAdjacency_list().get(i);
-            int size = (adj != null) ? adj.size() : 0;
-            System.out.println("adj[" + i + "] size: " + size);
-            if(i==2){
-                System.out.println("Adjacencies of 2:");
-                for(Pair u: adj){
-                    System.out.println(u.getFirst());
-                }
-            }
-            if(i==20){
-                System.out.println("Adjacencies of 2:");
-                for(Pair u: adj){
-                    System.out.println(u.getFirst());
-                }
-            }
-        }
-         */
-        ArrayList<Integer> dummy = this.subway.leastStationsPath(1,99);
-
-        for(Integer dum : dummy){
-            System.out.println("Name: "+this.station_db.get(dum).getName());
-        }
-        this.subway.resetPredeccesors();
-        Heuristic euclidean = new HaversineHeuristic();
-        ArrayList<Integer> dummy2 = this.subway.optimalPath(1,99,euclidean);
-
-        System.out.println("Dummy size: "+dummy2.size());
-
-        for(Integer dum : dummy2){
-            if(dum == 0) continue;
-            System.out.println("Name: "+this.station_db.get(dum).getName());
-        }
-
-
-
     }
+
 
 
     public void useRoute(String routeName) {

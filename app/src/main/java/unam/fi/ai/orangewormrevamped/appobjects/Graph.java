@@ -10,6 +10,7 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.HashMap;
 
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.Heuristic;
 
 public class Graph {
@@ -101,10 +102,10 @@ public class Graph {
                 int tentative_gScore = distances.get(u) + weight;
 
                 if (tentative_gScore < distances.get(v)) {
-                    distances.set(v, tentative_gScore);
+                    int fScore = tentative_gScore + heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
+                    distances.set(v, tentative_gScore+fScore);
                     predecessors.set(v, u);
 
-                    int fScore = tentative_gScore + heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
                     openSet.add(new Pair(v, fScore));
                 }
             }
@@ -178,6 +179,45 @@ public class Graph {
 
         Collections.reverse(route);
         return route;
+    }
+
+    public int calculateTransferTime(ArrayList<Integer> route, Heuristic heuristic) {
+        if (route == null || route.size() < 2) return 0;
+
+        int totalTransferTime = 0;
+        int goal = route.get(route.size() - 1); // final destination
+
+        Station goalStation = station_db.get(goal);
+
+        for (int i = 0; i < route.size() - 1; i++) {
+            int from = route.get(i);
+            int to = route.get(i + 1);
+            boolean found = false;
+
+            for (Pair neighbor : adjacency_list.getOrDefault(from, new ArrayList<>())) {
+                if (neighbor.getFirst() == to) {
+                    int weight = neighbor.getSecond(); // g(n)
+
+                    // h(n): heuristic from 'to' to goal
+                    int hScore = heuristic.h_function(
+                            station_db.get(to).getLongitude(), goalStation.getLongitude(),
+                            station_db.get(to).getLatitude(), goalStation.getLatitude()
+                    );
+                    totalTransferTime += weight + hScore;
+                    System.out.println("Weight: "+weight);
+                    System.out.println("Heuristic: "+ hScore);
+                    System.out.println("Transfer time: "+totalTransferTime);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Warning: Edge not found between " + from + " and " + to);
+            }
+        }
+
+        return totalTransferTime;
     }
 
 

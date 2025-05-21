@@ -19,6 +19,7 @@ import unam.fi.ai.orangewormrevamped.R;
 import unam.fi.ai.orangewormrevamped.appobjects.Station;
 import unam.fi.ai.orangewormrevamped.appobjects.UserManager;
 import unam.fi.ai.orangewormrevamped.appobjects.heuristics.HaversineHeuristic;
+import unam.fi.ai.orangewormrevamped.appobjects.heuristics.ZeroHeuristic;
 
 public class RouteDetailsActivity extends Activity {
 
@@ -69,15 +70,15 @@ public class RouteDetailsActivity extends Activity {
         Button useButton = findViewById(R.id.useRouteButton);
 
         bfsButton.setOnClickListener(v -> {
-            showToast("Tiempo estimado: " + stationIds.size() * 2 + " min (BFS simulado)");
+            int time = UserManager.current_user.subway.calculateTransferTime(stationIds,new ZeroHeuristic());
+            showToast("Tiempo estimado: " + time + " min");
         });
 
         astarButton.setOnClickListener(v -> {
             int start = stationIds.get(0);
             int end = stationIds.get(stationIds.size() - 1);
-            UserManager.current_user.subway.optimalPath(start, end, new HaversineHeuristic());
-            int time = UserManager.current_user.subway.queryDistance(end);
-            showToast("Tiempo estimado A*: " + time + " min");
+            int time = UserManager.current_user.subway.calculateTransferTime(stationIds,new HaversineHeuristic());
+            showToast("Tiempo estimado: " + time + " min");
         });
 
         useButton.setOnClickListener(v -> {
