@@ -18,7 +18,7 @@ public class MetroMapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metro_map); // Asegúrate que este archivo XML existe
 
-        layoutLineas = findViewById(R.id.layoutLineas); // Este ID debe coincidir con el del LinearLayout en tu XML
+        layoutLineas = findViewById(R.id.layoutLineas);
 
         for (int i = 1; i <= 12; i++) {
             final int numeroLinea = i;

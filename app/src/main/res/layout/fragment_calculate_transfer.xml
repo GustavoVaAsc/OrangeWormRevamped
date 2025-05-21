@@ -67,5 +67,12 @@
             android:layout_height="wrap_content"
             android:text="Guardar ruta" />
 
+        <Button
+            android:id="@+id/showDetailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver detalles de la ruta"
+            android:layout_marginTop="12dp" />
+
     </LinearLayout>
 </ScrollView>
