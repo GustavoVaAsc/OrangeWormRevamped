@@ -96,11 +96,11 @@ public class HomeFragment extends Fragment {
     private int getLineColor(String line) {
         switch (line) {
             case "1":
-                return Color.parseColor("#FFC0CB"); // Pink
+                return Color.parseColor("#f54890"); // Pink
             case "2":
-                return Color.parseColor("#0000FF"); // Blue
+                return Color.parseColor("#0a5aa6"); // Blue
             case "3":
-                return Color.parseColor("#808000"); // Olive Green
+                return Color.parseColor("#b4ae04"); // Olive Green
             case "4":
                 return Color.parseColor("#B2FFFF"); // Light Aqua
             case "5":
@@ -108,9 +108,9 @@ public class HomeFragment extends Fragment {
             case "6":
                 return Color.parseColor("#FF0000"); // Red
             case "7":
-                return Color.parseColor("#FFA500"); // Orange
+                return Color.parseColor("#ff6309"); // Orange
             case "8":
-                return Color.parseColor("#0B8758"); // Aqua Green
+                return Color.parseColor("#06884a"); // Aqua Green
             case "9":
                 return Color.parseColor("#A52A2A"); // Brown
             case "A":
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
             case "B":
                 return Color.parseColor("#808080"); // Gray
             case "12":
-                return Color.parseColor("#BBA53D"); // Gold
+                return Color.parseColor("#b89d4d"); // Gold
             default:
                 return Color.LTGRAY; // Fallback color
         }
