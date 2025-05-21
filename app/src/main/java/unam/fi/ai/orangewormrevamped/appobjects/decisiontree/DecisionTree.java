@@ -2,6 +2,7 @@ package unam.fi.ai.orangewormrevamped.appobjects.decisiontree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,24 @@ public class DecisionTree {
     // Predict route for a single instance
     public String predict(RouteInstance instance) {
         return classify(instance, root);
+    }
+
+    public void predictCurrentRoute(DecisionTree dt, String lastUsedRoute, double distance) {
+        // Get current hour
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);  // 0 - 23
+
+        // Determine type of day
+        String typeOfDay = (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
+                calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+                ? "weekend" : "weekday";
+
+        // Create a query RouteInstance
+        RouteInstance query = new RouteInstance(hour, typeOfDay, lastUsedRoute, distance, null);
+
+        // Predict the best route
+        String prediction = dt.predict(query);
+        System.out.println("Predicted best route at hour " + hour + " on a " + typeOfDay + ": " + prediction);
     }
 
     private String classify(RouteInstance instance, DecisionTreeNode node) {

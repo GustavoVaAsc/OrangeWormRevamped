@@ -17,7 +17,7 @@ public class HaversineHeuristic implements Heuristic{
 
         // Haversine(a) = sin^2(a/2)
 
-        double a = haversine(latitude_diff) + Math.cos(Math.toRadians(y2))*Math.cos(Math.toRadians(y1)) + haversine(longitude_diff);
+        double a = haversine(latitude_diff) + Math.cos(Math.toRadians(y1)) * Math.cos(Math.toRadians(y2)) * haversine(longitude_diff);
         double c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 
         double result = ((EARTH_RADIUS*c)/AVG_SPEED)/60;

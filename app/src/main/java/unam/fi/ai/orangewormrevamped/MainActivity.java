@@ -1,5 +1,6 @@
 package unam.fi.ai.orangewormrevamped;
 import unam.fi.ai.orangewormrevamped.appobjects.*;
+import unam.fi.ai.orangewormrevamped.appobjects.decisiontree.*;
 import unam.fi.ai.orangewormrevamped.ui.calculatetime.CalculateTransferFragment;
 
 import android.content.Intent;
@@ -17,6 +18,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 import unam.fi.ai.orangewormrevamped.databinding.ActivityMainBinding;
 import unam.fi.ai.orangewormrevamped.ui.subwaymap.MetroMapActivity;
@@ -44,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
         UserManager.current_user.loadGraph(this);
         UserManager.current_user.createGraph();
         UserManager.current_user.loadUserRoutes(this);
+        DecisionTree dt = new DecisionTree();
+        List<RouteInstance> to_train = dt.convertRoutesToInstances(UserManager.current_user.getSavedRoutes());
+        Trainer trainer = new Trainer();
+        trainer.invokeTrainer(to_train,dt);
 
+        //dt.predictCurrentRoute(dt,);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
