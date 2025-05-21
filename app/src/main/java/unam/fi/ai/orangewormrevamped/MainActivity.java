@@ -29,16 +29,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String CALCULATE_TRANSFER_TAG = "calculate_transfer_fragment";
 
 
+    public boolean isCalculateTransferFragmentOpen() {
+        Fragment f = getSupportFragmentManager().findFragmentByTag(CALCULATE_TRANSFER_TAG);
+        return f != null && f.isVisible();
+    }
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserManager.current_user = new User("Temporal","12345678");
         UserManager.current_user.loadGraph(this);
         UserManager.current_user.createGraph();
+        UserManager.current_user.loadUserRoutes(this);
 
-        // Dummy predefined routes
-
-        //UserManager.current_user.
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -78,42 +84,38 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            // If any other fragment is opened, remove CalculateTransferFragment
-            if (isCalculateTransferFragmentOpen && id != R.id.nav_calculatetime) {
-                Fragment calculateFragment = getSupportFragmentManager().findFragmentByTag(CALCULATE_TRANSFER_TAG);
-                if (calculateFragment != null) {
-                    getSupportFragmentManager().beginTransaction().remove(calculateFragment).commit();
-                }
+            FragmentManager fm = getSupportFragmentManager();
+            Fragment calculateFragment = fm.findFragmentByTag(CALCULATE_TRANSFER_TAG);
+
+            if (calculateFragment != null) {
+                fm.popBackStack(CALCULATE_TRANSFER_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 isCalculateTransferFragmentOpen = false;
             }
 
             if (id == R.id.nav_calculatetime) {
                 if (!isCalculateTransferFragmentOpen) {
                     isCalculateTransferFragmentOpen = true;
-                    getSupportFragmentManager()
-                            .beginTransaction()
+                    fm.beginTransaction()
                             .replace(R.id.nav_host_fragment_content_main, new CalculateTransferFragment(), CALCULATE_TRANSFER_TAG)
-                            .addToBackStack(null)
+                            .addToBackStack(CALCULATE_TRANSFER_TAG)
                             .commit();
                 }
-                drawer.closeDrawers();
+                binding.drawerLayout.closeDrawers();
                 return true;
             } else if (id == R.id.nav_subwaymap) {
-                // ¡Aquí interceptamos el click en “Mapa del Metro”!
                 Intent intent = new Intent(MainActivity.this, MetroMapActivity.class);
                 startActivity(intent);
-
-                drawer.closeDrawers();
+                binding.drawerLayout.closeDrawers();
                 return true;
-            }
-            else {
-                drawer.closeDrawers();
-                // Dejamos que NavigationUI maneje el resto
+            } else {
+                binding.drawerLayout.closeDrawers();
                 return NavigationUI.onNavDestinationSelected(item,
                         Navigation.findNavController(this, R.id.nav_host_fragment_content_main))
                         || super.onOptionsItemSelected(item);
             }
         });
+
+
 
 
     }
@@ -143,5 +145,16 @@ public class MainActivity extends AppCompatActivity {
         isCalculateTransferFragmentOpen = f != null;
     }
 
+    private void clearActiveFragmentScreen() {
+        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        if (navHostFragment != null && navHostFragment.getChildFragmentManager().getFragments().size() > 0) {
+            Fragment currentFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+            if (currentFragment instanceof unam.fi.ai.orangewormrevamped.ui.home.HomeFragment) {
+                ((unam.fi.ai.orangewormrevamped.ui.home.HomeFragment) currentFragment).clearScreen();
+            } else if (currentFragment instanceof unam.fi.ai.orangewormrevamped.ui.gallery.GalleryFragment) {
+                ((unam.fi.ai.orangewormrevamped.ui.gallery.GalleryFragment) currentFragment).clearScreen();
+            }
+        }
+    }
 
 }

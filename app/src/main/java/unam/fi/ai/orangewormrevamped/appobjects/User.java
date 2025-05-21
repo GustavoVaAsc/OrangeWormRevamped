@@ -1,4 +1,7 @@
 package unam.fi.ai.orangewormrevamped.appobjects;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +21,7 @@ import android.content.res.AssetManager;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.stream.Collectors;
 //import java.util.concurrent.ThreadLocalRandom;
 
 public class User {
@@ -240,9 +244,112 @@ public class User {
         }
         return result.toString();
     }
-    public void addNewRoute(Route r){
-        this.saved_routes.add(r);
+
+    public void loadUserRoutes(Context context) {
+        AssetManager assetManager = context.getAssets();
+        int routeIndex = 0;
+
+        while (true) {
+            String routeFile = "dbfiles/routes/" + this.username + "/" + routeIndex + ".csv";
+            System.out.println(routeFile);
+            try (InputStream is = assetManager.open(routeFile);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+
+                String header = reader.readLine();
+                if (header == null) break;
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",", -1);
+                    if (parts.length != 4) {
+                        System.err.println("Malformed line in " + routeFile + ": " + line);
+                        continue;
+                    }
+
+                    String routeName = parts[0];
+                    ArrayList<Integer> stationIDs = parseIntegerList(parts[1]);
+                    List<Integer> usageHours = parseIntegerList(parts[2]);
+                    List<Boolean> isWeekendFlags = parseBooleanList(parts[3]);
+
+                    if (usageHours.size() != isWeekendFlags.size()) {
+                        System.err.println("Mismatched usageHours and isWeekend in " + routeFile);
+                        continue;
+                    }
+
+                    Route route = new Route(routeName, stationIDs, usageHours, isWeekendFlags);
+                    this.saved_routes.add(route);
+                }
+
+                routeIndex++;
+
+            } catch (IOException e) {
+                System.out.println("Finished loading route files. Total routes loaded: " + this.saved_routes.size());
+                break;
+            }
+        }
     }
+
+    private List<Boolean> parseBooleanList(String str) {
+        List<Boolean> result = new ArrayList<>();
+        for (String token : str.split(" ")) {
+            token = token.trim();
+            if (token.equals("1")) {
+                result.add(true);
+            } else if (token.equals("0")) {
+                result.add(false);
+            } else {
+                System.err.println("Invalid boolean flag (expected 0 or 1): " + token);
+            }
+        }
+        return result;
+    }
+
+    private ArrayList<Integer> parseIntegerList(String str) {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (String token : str.split(" ")) {
+            try {
+                result.add(Integer.parseInt(token.trim()));
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid number: " + token);
+            }
+        }
+        return result;
+    }
+
+    public void saveRouteToCSV(Route route, Context context) {
+        String basePath = "dbfiles/routes/" + this.username;
+        String fileName = basePath + "/" + this.saved_routes.size() + ".csv";
+        System.out.println(fileName);
+        // Ensure directory exists
+        File dir = new File(context.getFilesDir(), basePath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File file = new File(context.getFilesDir(), fileName);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            // Write header
+            writer.write("RouteName,StationIDs,UsageHours,IsWeekend");
+            writer.newLine();
+
+            // Convert values to CSV-friendly strings
+            String stationIds = route.getStation_list().stream().map(String::valueOf).collect(Collectors.joining(" "));
+            String usageHours = route.getUsageHours().stream().map(String::valueOf).collect(Collectors.joining(" "));
+            String isWeekend = route.getWeekendFlags().stream().map(b -> b ? "1" : "0").collect(Collectors.joining(" "));
+
+            // Write the route data
+            writer.write(route.getName() + "," + stationIds + "," + usageHours + "," + isWeekend);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addNewRoute(Route route, Context context) {
+        this.saved_routes.add(route);
+        saveRouteToCSV(route, context);
+    }
+
 
     public Integer getNumberOfRoutes(){
         return this.saved_routes.size();
@@ -259,4 +366,6 @@ public class User {
     public HashMap<String, Integer> getTransfer_times() {
         return transfer_times;
     }
+
+
 }

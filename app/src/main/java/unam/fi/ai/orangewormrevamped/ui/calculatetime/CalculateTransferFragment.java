@@ -89,8 +89,8 @@ public class CalculateTransferFragment extends Fragment {
                 if (routeName.isEmpty()) {
                     routeName = "Ruta guardada " + (UserManager.current_user.getNumberOfRoutes() + 1);
                 }
-                Route route = new Route(routeName, lastRoute, new ArrayList<Integer>());
-                UserManager.current_user.addNewRoute(route);
+                Route route = new Route(routeName, lastRoute, new ArrayList<Integer>(), new ArrayList<Boolean>());
+                UserManager.current_user.addNewRoute(route, requireContext());
                 showToast("Ruta guardada como: " + routeName);
             } else {
                 showToast("No hay una ruta por guardar");
@@ -135,8 +135,31 @@ public class CalculateTransferFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        // Clear result text
+        if (resultText != null) {
+            resultText.setText("");
+        }
+
+        // Clear inputs and lastRoute
+        lastRoute = null;
+
+        View root = getView();
+        if (root != null) {
+            EditText startStation = root.findViewById(R.id.startStation);
+            EditText endStation = root.findViewById(R.id.endStation);
+            EditText routeName = root.findViewById(R.id.routeNameInput);
+
+            if (startStation != null) startStation.setText("");
+            if (endStation != null) endStation.setText("");
+            if (routeName != null) routeName.setText("");
+        }
+
+        // Mark fragment as closed in MainActivity
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).setCalculateTransferFragmentOpen(false);
         }
     }
+
+
 }

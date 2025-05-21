@@ -83,16 +83,33 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        // Clear GridLayout views if it exists
+        View root = getView();
+        if (root != null) {
+            GridLayout gridLayout = root.findViewById(R.id.transferTimeGrid);
+            if (gridLayout != null) {
+                gridLayout.removeAllViews();
+            }
+
+            RecyclerView routeRecyclerView = root.findViewById(R.id.routeRecyclerView);
+            if (routeRecyclerView != null) {
+                routeRecyclerView.setAdapter(null);
+            }
+        }
+
+        // Nullify binding reference
         binding = null;
     }
+
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
+
     private int getLineColor(String line) {
         switch (line) {
             case "1":
@@ -124,6 +141,32 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    public void clearScreen() {
+        if (getView() != null) {
+            // Clear GridLayout
+            GridLayout gridLayout = getView().findViewById(R.id.transferTimeGrid);
+            if (gridLayout != null) {
+                gridLayout.removeAllViews();
+            }
+
+            // Clear RecyclerView
+            RecyclerView recyclerView = getView().findViewById(R.id.routeRecyclerView);
+            if (recyclerView != null) {
+                recyclerView.setAdapter(null);
+            }
+
+            // Clear TextViews
+            TextView greeting = getView().findViewById(R.id.legendRoutes);
+            if (greeting != null) {
+                greeting.setText("");
+            }
+
+            greeting = getView().findViewById(R.id.legendTransfer);
+            if (greeting != null) {
+                greeting.setText("");
+            }
 
 
+        }
+    }
 }

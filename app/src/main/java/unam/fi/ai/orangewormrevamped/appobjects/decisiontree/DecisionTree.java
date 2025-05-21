@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import unam.fi.ai.orangewormrevamped.appobjects.Route;
+
 public class DecisionTree {
     private DecisionTreeNode root;
 
@@ -220,4 +222,33 @@ public class DecisionTree {
 
         return baseEntropy - weightedEntropy;
     }
+
+    public List<RouteInstance> convertRoutesToInstances(List<Route> routes) {
+        List<RouteInstance> instances = new ArrayList<>();
+        List<String> recentRoutes = new ArrayList<>();
+
+        for (Route route : routes) {
+            List<Integer> hours = route.getUsageHours();
+            List<Boolean> weekendFlags = route.getWeekendFlags();
+
+            for (int i = 0; i < hours.size(); i++) {
+                int hour = hours.get(i);
+                String dayType = weekendFlags.get(i) ? "weekend" : "weekday";
+                String lastRoute = recentRoutes.isEmpty() ? "none" : recentRoutes.get(recentRoutes.size() - 1);
+                int distance = route.getNumberOfStations();
+                String routeName = route.getName();
+
+                RouteInstance instance = new RouteInstance(hour, dayType, lastRoute, distance, routeName);
+                instances.add(instance);
+
+                recentRoutes.add(routeName);
+                if (recentRoutes.size() > 5) {
+                    recentRoutes.remove(0);
+                }
+            }
+        }
+
+        return instances;
+    }
+
 }

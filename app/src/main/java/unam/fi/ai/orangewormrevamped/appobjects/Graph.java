@@ -102,7 +102,7 @@ public class Graph {
                 int tentative_gScore = distances.get(u) + weight;
 
                 if (tentative_gScore < distances.get(v)) {
-                    int fScore = tentative_gScore + heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
+                    int fScore = heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
                     distances.set(v, tentative_gScore+fScore);
                     predecessors.set(v, u);
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import unam.fi.ai.orangewormrevamped.R;
 import unam.fi.ai.orangewormrevamped.appobjects.UserManager;
 import unam.fi.ai.orangewormrevamped.databinding.FragmentGalleryBinding;
 import unam.fi.ai.orangewormrevamped.ui.routedetails.RouteDetailsActivity;
@@ -49,6 +50,24 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        // Clear RecyclerView adapter
+        if (binding != null && binding.routeRecyclerView != null) {
+            binding.routeRecyclerView.setAdapter(null);
+        }
+
+        // Clear binding reference
         binding = null;
     }
+
+    public void clearScreen() {
+        if (getView() != null) {
+            RecyclerView recyclerView = getView().findViewById(R.id.routeRecyclerView);
+            if (recyclerView != null) {
+                recyclerView.setAdapter(null);
+            }
+        }
+    }
+
+
 }

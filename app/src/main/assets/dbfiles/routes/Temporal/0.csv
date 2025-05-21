@@ -1,2 +1,2 @@
-RouteName,StationIDs,HoursOfUse
-Ir al centro pa,62 61 60 59 58 57 56 55 54 53 52 51 8 50 30 31 32,10 10 10 10 8 8 8 8 15
+RouteName,StationIDs,HoursOfUse,isWeekend
+Ir al centro pa,62 61 60 59 58 57 56 55 54 53 52 51 8 50 30 31 32,10 10 10 10 8 8 8 8 15,1 1 1 1 0 0 0 0 0
