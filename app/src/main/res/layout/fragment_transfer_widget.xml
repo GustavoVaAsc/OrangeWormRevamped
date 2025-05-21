@@ -8,12 +8,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/legendTransfer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avance de trenes"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
         <GridLayout
             android:id="@+id/transferTimeGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="4"
             android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/legendRoutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tal vez quieras usar..."
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/routeRecyclerView"

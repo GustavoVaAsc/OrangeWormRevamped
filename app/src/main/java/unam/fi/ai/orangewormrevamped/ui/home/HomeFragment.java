@@ -40,41 +40,31 @@ public class HomeFragment extends Fragment {
 
         // --- 1. TRANSFER TIME GRID ---
         GridLayout gridLayout = root.findViewById(R.id.transferTimeGrid);
-        HashMap<String, Integer> times = UserManager.current_user.getTransfer_times(); // Keys like "1", "2", ..., "12", "A", "B"
+        HashMap<String, Integer> times = UserManager.current_user.getTransfer_times();
 
         if (times != null) {
-            gridLayout.setColumnCount(4); // 4 blocks per row
+            gridLayout.setColumnCount(4);
             gridLayout.removeAllViews();
 
-            // List of line names (sorted as you prefer)
             String[] lineKeys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "12"};
 
-            for (int i = 0; i < lineKeys.length; i++) {
-                String line = lineKeys[i];
-
+            for (String line : lineKeys) {
                 TextView block = new TextView(getContext());
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = 0;
-                params.height = dpToPx(60);
+                params.height = dpToPx(80);  // Slightly taller for three lines of text
                 params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
                 params.setMargins(8, 8, 8, 8);
                 block.setLayoutParams(params);
 
                 Integer time = times.get(line);
-                String displayText = (time != null) ? time + " min" : "N/A";
-                block.setText(line + "\n" + displayText);
+                String displayText = (time != null) ? "Linea\n" + line + "\n" + time + " min" : "Linea\n" + line + "\nN/A";
+                block.setText(displayText);
                 block.setGravity(Gravity.CENTER);
                 block.setTextColor(Color.BLACK);
 
-                if (time != null) {
-                    if (time < 5) block.setBackgroundColor(Color.parseColor("#A5D6A7")); // green
-                    else if (time < 10) block.setBackgroundColor(Color.parseColor("#FFF59D")); // yellow
-                    else block.setBackgroundColor(Color.parseColor("#EF9A9A")); // red
-                } else {
-                    block.setBackgroundColor(Color.LTGRAY); // unknown
-                }
-
+                block.setBackgroundColor(getLineColor(line));
                 gridLayout.addView(block);
             }
         }
@@ -83,14 +73,15 @@ public class HomeFragment extends Fragment {
         RecyclerView routeRecyclerView = root.findViewById(R.id.routeRecyclerView);
         routeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        RouteAdapter adapter = new RouteAdapter(UserManager.current_user.getSavedRoutes(), route -> {
-            Toast.makeText(getContext(), "Clicked: " + route.getName(), Toast.LENGTH_SHORT).show();
-        });
+        RouteAdapter adapter = new RouteAdapter(UserManager.current_user.getSavedRoutes(), route ->
+                Toast.makeText(getContext(), "Clicked: " + route.getName(), Toast.LENGTH_SHORT).show()
+        );
 
         routeRecyclerView.setAdapter(adapter);
 
         return root;
     }
+
 
 
     @Override
@@ -102,5 +93,37 @@ public class HomeFragment extends Fragment {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
+    private int getLineColor(String line) {
+        switch (line) {
+            case "1":
+                return Color.parseColor("#FFC0CB"); // Pink
+            case "2":
+                return Color.parseColor("#0000FF"); // Blue
+            case "3":
+                return Color.parseColor("#808000"); // Olive Green
+            case "4":
+                return Color.parseColor("#B2FFFF"); // Light Aqua
+            case "5":
+                return Color.parseColor("#FFFF00"); // Yellow
+            case "6":
+                return Color.parseColor("#FF0000"); // Red
+            case "7":
+                return Color.parseColor("#FFA500"); // Orange
+            case "8":
+                return Color.parseColor("#0B8758"); // Aqua Green
+            case "9":
+                return Color.parseColor("#A52A2A"); // Brown
+            case "A":
+                return Color.parseColor("#800080"); // Purple
+            case "B":
+                return Color.parseColor("#808080"); // Gray
+            case "12":
+                return Color.parseColor("#BBA53D"); // Gold
+            default:
+                return Color.LTGRAY; // Fallback color
+        }
+    }
+
+
 
 }
