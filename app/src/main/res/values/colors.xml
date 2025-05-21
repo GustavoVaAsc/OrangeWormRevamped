@@ -11,4 +11,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="fab_background">#FD5100</color>
     <color name="route_text">#000000</color>
+    <color name="button_text_color">#000000</color>
 </resources>

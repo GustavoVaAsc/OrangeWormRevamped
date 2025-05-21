@@ -1,3 +1,4 @@
 <resources>
 	<color name="route_text">#FFFFFF</color>
+	<color name="button_text_color">#FFFFFF</color>
 </resources>

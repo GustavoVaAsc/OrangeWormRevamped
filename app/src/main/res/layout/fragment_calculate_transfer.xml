@@ -14,7 +14,7 @@
             android:id="@+id/startStation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Estación inicial"
+            android:hint="ESTACIÓN INICIAL"
             android:inputType="text"
             android:layout_marginBottom="8dp" />
 
@@ -22,7 +22,7 @@
             android:id="@+id/endStation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Estación destino"
+            android:hint="ESTACIÓN DESTINO"
             android:inputType="text"
             android:layout_marginBottom="16dp" />
 
@@ -30,7 +30,7 @@
             android:id="@+id/routeNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre de la ruta"
+            android:hint="NOMBRE DE LA RUTA"
             android:inputType="textPersonName"
             android:layout_marginTop="16dp" />
 
@@ -39,21 +39,23 @@
             android:id="@+id/bfsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ruta con menos estaciones"
+            android:text="RUTA CON MENOS ESTACIONES"
+            android:textColor="@color/button_text_color"
             android:layout_marginBottom="8dp" />
 
         <Button
             android:id="@+id/astarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ruta con menor tiempo de traslado"
+            android:text="RUTA CON MENOR TIEMPO DE TRASLADO"
+            android:textColor="@color/button_text_color"
             android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/resultText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="La ruta aparecerá aquí"
+            android:text="LA RUTA APARECERÁ AQUÍ"
             android:textSize="16sp"
             android:textColor="#000000"
             android:padding="8dp"
@@ -65,13 +67,15 @@
             android:id="@+id/saveRouteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Guardar ruta" />
+            android:textColor="@color/button_text_color"
+            android:text="GUARDAR RUTA" />
 
         <Button
             android:id="@+id/showDetailsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ver detalles de la ruta"
+            android:text="VER DETALLES DE LA RUTA"
+            android:textColor="@color/button_text_color"
             android:layout_marginTop="12dp" />
 
     </LinearLayout>
