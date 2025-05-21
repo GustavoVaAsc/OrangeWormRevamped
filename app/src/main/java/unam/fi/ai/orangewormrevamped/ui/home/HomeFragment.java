@@ -33,16 +33,16 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        TextView stationText = root.findViewById(R.id.stationTextView);
+        //TextView stationText = root.findViewById(R.id.stationTextView);
 
         if (UserManager.current_user != null) {
             StringBuilder output = new StringBuilder();
             for (Station station : UserManager.current_user.getStation_db().values()) {
                 output.append(station.getName()).append(" (ID: ").append(station.getId()).append(")\n");
             }
-            stationText.setText(output.toString());
+            //stationText.setText(output.toString());
         } else {
-            stationText.setText("No user loaded.");
+            //stationText.setText("No user loaded.");
         }
 
         return root;
