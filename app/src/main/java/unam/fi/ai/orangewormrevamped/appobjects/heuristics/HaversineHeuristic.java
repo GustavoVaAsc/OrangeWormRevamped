@@ -11,16 +11,21 @@ public class HaversineHeuristic implements Heuristic{
     public double haversine(double a){
         return Math.sin(a/2) * Math.sin(a/2);
     }
-    public int h_function(double x1, double x2, double y1, double y2){
-        double latitude_diff = Math.toRadians(y2-y1);
-        double longitude_diff = Math.toRadians(x2-x1);
+    public int h_function(double lat1, double lon1, double lat2, double lon2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
 
-        // Haversine(a) = sin^2(a/2)
+        double a = haversine(dLat)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * haversine(dLon);
 
-        double a = haversine(latitude_diff) + Math.cos(Math.toRadians(y1)) * Math.cos(Math.toRadians(y2)) * haversine(longitude_diff);
-        double c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = EARTH_RADIUS * c; // in km
 
-        double result = ((EARTH_RADIUS*c)/AVG_SPEED)/60;
-        return (int) result;
+        double timeInHours = distance / AVG_SPEED;
+        double timeInMinutes = timeInHours * 60;
+
+        return (int) timeInMinutes;
     }
+
 }

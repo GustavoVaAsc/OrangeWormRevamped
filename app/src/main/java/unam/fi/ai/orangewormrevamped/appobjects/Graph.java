@@ -61,8 +61,6 @@ public class Graph {
             }
      */
 
-
-    // TODO:  Add heuristic calculation, and convert this function into arraylist
     public ArrayList<Integer> optimalPath(int source, int goal, Heuristic heuristic) {
         //System.out.println("This is AStar");
         int n = vertices.size() + 1;
@@ -81,7 +79,7 @@ public class Graph {
 
         PriorityQueue<Pair> openSet = new PriorityQueue<>();
 
-        int fScoreSource = heuristic.h_function(source_long, goal_long, source_lat, goal_lat);
+        int fScoreSource = heuristic.h_function(source_lat, source_long, goal_lat, goal_long);
         openSet.add(new Pair(source, fScoreSource));
 
         while (!openSet.isEmpty()) {
@@ -102,11 +100,13 @@ public class Graph {
                 int tentative_gScore = distances.get(u) + weight;
 
                 if (tentative_gScore < distances.get(v)) {
-                    int fScore = heuristic.h_function(v_long, goal_long, v_lat, goal_lat);
+                    int fScore = heuristic.h_function(v_lat, v_long, goal_lat, goal_long);
+                    System.out.println("h(n): "+fScore);
                     distances.set(v, tentative_gScore+fScore);
                     predecessors.set(v, u);
 
-                    openSet.add(new Pair(v, fScore));
+                    openSet.add(new Pair(v, tentative_gScore + fScore));
+
                 }
             }
         }
@@ -198,10 +198,15 @@ public class Graph {
                 if (neighbor.getFirst() == to) {
                     int weight = neighbor.getSecond(); // g(n)
 
+                    System.out.println("From: lat=" + station_db.get(to).getLatitude() +
+                            ", lon=" + station_db.get(to).getLongitude());
+                    System.out.println("To: lat=" + goalStation.getLatitude() +
+                            ", lon=" + goalStation.getLongitude());
+
                     // h(n): heuristic from 'to' to goal
                     int hScore = heuristic.h_function(
-                            station_db.get(to).getLongitude(), goalStation.getLongitude(),
-                            station_db.get(to).getLatitude(), goalStation.getLatitude()
+                            station_db.get(to).getLatitude(), station_db.get(to).getLongitude(),
+                            goalStation.getLatitude(), goalStation.getLongitude()
                     );
                     totalTransferTime += weight + hScore;
                     System.out.println("Weight: "+weight);
